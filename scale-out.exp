@@ -1,0 +1,21 @@
+#!/usr/bin/expect
+
+spawn ssh root@211.183.3.37 docker swarm 
+expect {       
+  "Are you sure you want to continue connecting (yes/no)?" {
+    send "yes\r"; exp_continue
+  }
+[root@manager1 myscripts]# cat test.exp 
+#!/usr/bin/expect
+
+set token "[lindex $argv 0]"
+spawn echo "$token"
+spawn ssh root@211.183.3.37 "$token"
+expect {       
+  "Are you sure you want to continue connecting (yes/no)?" {
+    send "yes\r"; exp_continue
+  }
+  "root@211.183.3.37's password:" { 
+    send "test123\r"; exp_continue 
+  }  
+}

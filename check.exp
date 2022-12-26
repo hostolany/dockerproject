@@ -1,0 +1,15 @@
+#!/usr/bin/expect
+
+spawn ssh root@211.183.3.33
+expect {       
+  "Are you sure you want to continue connecting (yes/no)?" {
+    send "yes\r"; exp_continue
+  }
+  "root@211.183.3.37's password:" { 
+    send "test123\r"; exp_continue 
+  }  
+}
+interact
+spawn ansible all -a "docker stats --no-stream" -k | grep -v 211 | grep -v CONTAINER | awk '{ if ( $3 >= 80 ) print ($3)}' > flag.txt
+spawn ansible all -a "docker stats --no-stream" -k | grep -v 211 | grep -v CONTAINER | awk '{ if ( $3 >= 80 ) print ($7)}' > flag_mem.txt
+spawn ./check.sh

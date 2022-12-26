@@ -1,0 +1,11 @@
+#!/usr/bin/expect
+
+spawn ssh root@211.183.3.37 docker swarm leave --force
+expect {       
+  "Are you sure you want to continue connecting (yes/no)?" {
+    send "yes\r"; exp_continue
+  }
+  "root@211.183.3.37's password:" { 
+    send "test123\r"; exp_continue 
+  }  
+}
